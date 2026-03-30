@@ -1,6 +1,8 @@
 from flask import Flask, jsonify
+from flask_cors import CORS # YENİ EKLENDİ
 
 app = Flask(__name__)
+CORS(app)
 
 # Örnek bir veri tablosu (Şimdilik hafızada tutuyoruz, sonra RDS'ye bağlayacağız)
 ogrenciler = [

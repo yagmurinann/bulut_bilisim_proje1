@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bulut Bilişim Projesi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        li {
+            background: #eee;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Öğrenci Yönetim Paneli</h2>
+        <button onclick="verileriGetir()">API'den Verileri Getir</button>
+        <ul id="ogrenciListesi"></ul>
+    </div>
+
+    <script>
+        function verileriGetir() {
+            // Backend API adresimize istek atıyoruz (Fetch API)
+            fetch('http://127.0.0.1:5000/api/ogrenciler')
+                .then(response => response.json())
+                .then(data => {
+                    const liste = document.getElementById('ogrenciListesi');
+                    liste.innerHTML = ''; // Tıklanmadan önceki boşluğu temizle
+
+                    // Gelen veriyi döngüye sokup ekrana yazdırıyoruz
+                    data.forEach(ogrenci => {
+                        let li = document.createElement('li');
+                        li.textContent = "ID: " + ogrenci.id + " | Ad: " + ogrenci.ad + " | Bölüm: " + ogrenci.bolum;
+                        liste.appendChild(li);
+                    });
+                })
+                .catch(error => alert('Sunucuya bağlanılamadı. Backend çalışıyor mu?'));
+        }
+    </script>
+</body>
+
+</html>
