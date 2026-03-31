@@ -1,23 +1,42 @@
-from flask import Flask, jsonify
-from flask_cors import CORS # YENİ EKLENDİ
+from flask import Flask, jsonify, request # type: ignore
+from flask_cors import CORS # type: ignore
+import requests # type: ignore
 
 app = Flask(__name__)
 CORS(app)
 
-# Örnek bir veri tablosu (Şimdilik hafızada tutuyoruz, sonra RDS'ye bağlayacağız)
-ogrenciler = [
-    {"id": 1, "ad": "Ahmet", "bolum": "Bilgisayar Mühendisliği"},
-    {"id": 2, "ad": "Ayşe", "bolum": "Yazılım Mühendisliği"}
-]
+# Aldığın API Key'i buraya tırnak içine yapıştır
+API_KEY = "57b8205c25f16c83e2c9c46779000790"
 
-# RESTful API Endpoint (Uç noktası)
-@app.route('/api/ogrenciler', methods=['GET'])
-def get_ogrenciler():
-    return jsonify(ogrenciler)
+@app.route('/api/hava', methods=['GET'])
+def get_weather():
+    city = request.args.get('sehir', 'Ankara') # Varsayılan Ankara
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric&lang=tr"
+    
+    response = requests.get(url)
+    data = response.json()
 
-@app.route('/', methods=['GET'])
-def home():
-    return "Bulut Bilişim Backend API'si Çalışıyor! Antigravity devrede 🚀"
+    if response.status_code == 200:
+        temp = data['main']['temp']
+        desc = data['weather'][0]['description']
+        
+        # Akıllı Tavsiye Sistemi
+        tavsiye = ""
+        if temp < 10: tavsiye = "Hava soğuk, kalın giyinmelisin! 🧥"
+        elif 10 <= temp <= 20: tavsiye = "Hava serin, üzerine bir hırka al. 🧥"
+        else: tavsiye = "Hava harika, tişört yeterli! 👕"
+        
+        if "yağmur" in desc or "rain" in desc:
+            tavsiye += " Ayrıca şemsiyeni unutma! ☂️"
+
+        return jsonify({
+            "sehir": data['name'],
+            "derece": temp,
+            "durum": desc.capitalize(),
+            "tavsiye": tavsiye
+        })
+    else:
+        return jsonify({"hata": "Şehir bulunamadı!"}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=5000)
