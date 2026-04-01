@@ -2,7 +2,7 @@
 
 ## Proje Hakkında
 Bulut Hava Danışmanı, kullanıcıların istedikleri şehrin güncel hava durumunu görebildikleri ve havanın durumuna göre akıllı giyim veya hazırlık tavsiyeleri alabildikleri modern bir web uygulamasıdır. Proje, Ankara Üniversitesi Bulut Bilişim dersi kapsamında geliştirilmiştir ve AWS EC2 sunucusu üzerinde çalışan bir Flask backend'i ile AWS S3 üzerinde barındırılan estetik, modern bir frontend arayüzünden oluşmaktadır.
-
+🚀 **Canlı Demo:** [Projeyi Test Etmek İçin Tıklayın]http://yagmur-bulut-proje.s3-website.eu-north-1.amazonaws.com/
 ## ✨ Gelişmiş Özellikler
 - 🏙️ **Anlık Hava Durumu:** Şehir ismine göre OpenWeatherMap API kullanılarak gerçek zamanlı hava durumu verisi çekilir.
 - 💡 **Akıllı Tavsiye Sistemi:** Hava sıcaklığına ve yağış durumuna göre anlık giyim (örn. "Hava soğuk, kalın giyinmelisin! 🧥") tavsiyeleri sunar.
